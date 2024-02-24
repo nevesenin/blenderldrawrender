@@ -141,13 +141,8 @@ class RenderLDrawOps(bpy.types.Operator, ImportHelper):
     tasks       = None
 
     use_ldraw_import = True
-    for addon in bpy.context.preferences.addons:
-        if addon.module == 'io_scene_import_ldraw_mm':
-            use_ldraw_import = False
-            break
-        if addon.module == 'io_scene_import_ldraw':
-            use_ldraw_import = True
-            break
+    if 'io_scene_import_ldraw_mm' in [addon.module for addon in bpy.context.preferences.addons]:
+        use_ldraw_import = False
 
     if use_ldraw_import:
         prefs = importldraw.Preferences("")
