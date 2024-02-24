@@ -9,6 +9,7 @@ from . import helpers
 class ImportSettings:
     settings_path = os.path.join('config', 'ImportOptions.json')
     settings = None
+    default_settings = None
 
     filesystem_defaults = FileSystem.defaults
     ldraw_color_defaults = LDrawColor.defaults
@@ -27,7 +28,7 @@ class ImportSettings:
         'blend_file': ''
     }
 
-    default_settings = {
+    module_default_settings = {
         **filesystem_defaults,
         **ldraw_color_defaults,
         **import_options_defaults,
@@ -45,6 +46,9 @@ class ImportSettings:
     def get_setting(cls, key):
         if cls.settings is None:
             cls.load_settings()
+
+        if cls.default_settings is None:
+            cls.load_default_settings()
 
         setting = cls.settings.get(key)
         default = cls.default_settings.get(key)
@@ -65,7 +69,47 @@ class ImportSettings:
 
     @classmethod
     def load_settings(cls):
-        cls.settings = helpers.read_json(cls.settings_path, cls.default_settings)
+        loaded_settings = helpers.read_json(cls.settings_path, cls.default_settings)
+
+        for k, v in loaded_settings.items():
+            if k =='chosen_logo':
+                loaded_settings[k] = ImportOptions.chosen_logo_choices[v][0]
+            elif k =='color_strategy':
+                loaded_settings[k] = ImportOptions.color_strategy_choices[v][0]
+            elif k =='gap_scale_strategy':
+                loaded_settings[k] = ImportOptions.gap_scale_strategy_choices[v][0]
+            elif k =='gap_target':
+                loaded_settings[k] = ImportOptions.gap_target_choices[v][0]
+            elif k =='smooth_type':
+                loaded_settings[k] = ImportOptions.smooth_type_choices[v][0]
+            elif k =='use_colour_scheme':
+                loaded_settings[k] = LDrawColor.use_colour_scheme_choices[v][0]
+            elif k =='resolution':
+                loaded_settings[k] = FileSystem.resolution_choices[v][0]
+
+        cls.settings = loaded_settings
+
+    @classmethod
+    def load_default_settings(cls):
+        loaded_settings = cls.module_default_settings
+
+        for k, v in loaded_settings.items():
+            if k =='chosen_logo':
+                loaded_settings[k] = ImportOptions.chosen_logo_choices[v][0]
+            elif k =='color_strategy':
+                loaded_settings[k] = ImportOptions.color_strategy_choices[v][0]
+            elif k =='gap_scale_strategy':
+                loaded_settings[k] = ImportOptions.gap_scale_strategy_choices[v][0]
+            elif k =='gap_target':
+                loaded_settings[k] = ImportOptions.gap_target_choices[v][0]
+            elif k =='smooth_type':
+                loaded_settings[k] = ImportOptions.smooth_type_choices[v][0]
+            elif k =='use_colour_scheme':
+                loaded_settings[k] = LDrawColor.use_colour_scheme_choices[v][0]
+            elif k =='resolution':
+                loaded_settings[k] = FileSystem.resolution_choices[v][0]
+
+        cls.default_settings = loaded_settings
 
     @classmethod
     def save_settings(cls, has_settings):
