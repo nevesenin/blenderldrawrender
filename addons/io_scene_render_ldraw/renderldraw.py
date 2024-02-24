@@ -617,7 +617,8 @@ class RenderLDrawOps(bpy.types.Operator, ImportHelper):
         if not self.load_ldraw_model:
             self.model_file       = model_globals.LDRAW_MODEL_FILE
             self.image_file       = model_globals.LDRAW_IMAGE_FILE
-            self.preferences_file = preferences_file
+
+        self.preferences_file = preferences_file
 
         self.debugPrint(f"Preferences_File:    {self.preferences_file}")
         self.debugPrint(f"Model_File:          {self.model_file}")
