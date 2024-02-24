@@ -643,7 +643,7 @@ class RenderLDrawOps(bpy.types.Operator, ImportHelper):
             self.debugPrint(f"Image_File:          {self.image_file}")
 
             if self.use_ldraw_import_mm:
-                RenderLDrawOps.prefs = operator_import.ImportSettings.get_ini_settings(self.preferences_file)
+                RenderLDrawOps.prefs = operator_import.ImportSettings.get_settings()
                 self.ldraw_path = RenderLDrawOps.prefs.get('ldraw_path', filesystem.locate_ldraw())
             elif self.use_ldraw_import:
                 RenderLDrawOps.prefs = importldraw.Preferences(self.preferences_file)
