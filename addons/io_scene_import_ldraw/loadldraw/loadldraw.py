@@ -2365,7 +2365,12 @@ class BlenderMaterials:
     """Creates and stores a cache of materials for Blender"""
 
     __material_list = {}
-    __hasPrincipledShader = "ShaderNodeBsdfPrincipled" in [node.nodetype for node in getattr(bpy.types, "NODE_MT_category_SH_NEW_SHADER").category.items(None)]
+
+    def __hasPrincipledShader():
+        try:
+            "ShaderNodeBsdfPrincipled" in [node.nodetype for node in getattr(bpy.types, "NODE_MT_category_SH_NEW_SHADER").category.items(None)]
+        except:
+            False
 
     def __getGroupName(name):
         if Options.instructionsLook:
@@ -3732,7 +3737,7 @@ class BlenderMaterials:
 
     # **********************************************************************************
     def createBlenderNodeGroups():
-        BlenderMaterials.usePrincipledShader = BlenderMaterials.__hasPrincipledShader and Options.usePrincipledShaderWhenAvailable
+        BlenderMaterials.usePrincipledShader = BlenderMaterials.__hasPrincipledShader() and Options.usePrincipledShaderWhenAvailable
 
         BlenderMaterials.__createBlenderDistanceToCenterNodeGroup()
         BlenderMaterials.__createBlenderVectorElementPowerNodeGroup()
